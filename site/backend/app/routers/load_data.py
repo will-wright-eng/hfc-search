@@ -1,10 +1,11 @@
 from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
 
-from app.utils import crud, models, schemas, elasticsearch_client
 from app.core.log import logger
 from app.core.config import settings
 from app.utils.database import get_db
+
+# from app.utils import crud, models, schemas, elasticsearch_client
 
 router = APIRouter()
 
