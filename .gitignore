@@ -1,3 +1,10 @@
 *.zip
 *.pdf
+*.sql
 
+**/data/
+
+.DS_Store
+__pycache__
+
+*.db

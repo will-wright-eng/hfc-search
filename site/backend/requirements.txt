@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+sqlalchemy
+elasticsearch
+pydantic
+sqlparse
+openai
+faiss-cpu

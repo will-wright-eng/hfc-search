@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    tty: true
+    environment:
+      DATABASE_URL: sqlite:///./sql_app.db
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    ports:
+    - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+    - ./backend:/app:cached
+    env_file: .env
+    command: uvicorn app.main:app --host 0.0.0.0 --port ${BACKEND_PORT} --reload
+    depends_on:
+    - elasticsearch
+
+  elasticsearch:
+    build:
+      context: ./elasticsearch
+      dockerfile: Dockerfile
+    tty: false
+    environment:
+      discovery.type: single-node
+    ports:
+    - "9200:9200"
+#     volumes:
+#     - es_data:/usr/share/elasticsearch/data
+
+# volumes:
+#   es_data:
