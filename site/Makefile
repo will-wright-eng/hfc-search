@@ -13,7 +13,7 @@ up: ## run
 	docker compose up --build --remove-orphans
 
 open: ## open http://0.0.0.0
-	open ${HOST}:${BACKEND_PORT}
+	open ${HOST}:${BACKEND_PORT}/api/docs
 
 docker-kill: ## kill all docker containers
 	for id in $$(docker ps --format "{{.ID}}"); do docker kill $$id; done

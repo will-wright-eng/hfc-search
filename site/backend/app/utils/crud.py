@@ -11,4 +11,5 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-# Add other CRUD operations similarly...
+def get_all_users(db: Session):
+    return db.query(models.User).all()

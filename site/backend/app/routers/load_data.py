@@ -1,37 +1,41 @@
 from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
 
+from app.utils import crud, schemas
 from app.core.log import logger
 from app.core.config import settings
 from app.utils.database import get_db
-
-# from app.utils import crud, models, schemas, elasticsearch_client
+from app.utils.elasticsearch_client import es
 
 router = APIRouter()
 
 
-@router.post("/load_data/")
-def load_data(db: Session = Depends(get_db)):
-    # Load users
-    with open("/app/data/users_users_202407301106.sql", "r") as f:
-        # Process SQL file and insert data into SQLite
-        pass
+@router.post("/index_users_data/")
+def index_users_data(db: Session = Depends(get_db)):
+    logger.info("Indexing users data")
+    users = crud.get_all_users(db)
+    for user in users:
+        es.index(index="users", id=user.id, body=schemas.User.from_orm(user).dict())
 
-    # Load other data similarly...
-
-    return {"message": "Data loaded successfully"}
-
-
-@router.post("/index_data/")
-def index_data():
-    # Index data in Elasticsearch
-    pass
+    return {"message": "Data indexed successfully"}
 
 
 @router.post("/check_data/")
 def check_data():
-    # check data is present in docker container
-    logger.info(settings.DATA_DIR)
-    logger.info(settings.DATA_DIR.exists())
-    logger.info(settings.DATA_DIR.glob("*"))
-    return {"message": "Data checked successfully"}
+    logger.info("Checking data")
+    try:
+        return {
+            "message": "Data checked successfully",
+            "DATA_DIR": settings.DATA_DIR,
+            "DATA_DIR-exists": settings.DATA_DIR.exists(),
+            "files-in-DATA_DIR": [str(file.name) for file in settings.DATA_DIR.glob("*")],
+        }
+    except Exception as e:
+        return {"message": "Data check failed", "error": str(e)}
+
+
+@router.post("/get_users_sample/")
+def get_users_sample(db: Session = Depends(get_db)):
+    logger.info("Getting users sample")
+    users = crud.get_all_users(db)
+    return users[:10]

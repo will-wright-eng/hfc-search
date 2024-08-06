@@ -5,6 +5,7 @@ from app.core.config import settings
 from app.routers.search import router as search_router
 from app.utils.database import Base, engine
 from app.routers.load_data import router as load_data_router
+from app.routers.semantic_search import router as semantic_search_router
 
 app = FastAPI(title=settings.PROJECT_NAME, docs_url="/api/docs", openapi_url="/api")
 Base.metadata.create_all(bind=engine)
@@ -36,11 +37,16 @@ async def read_root():
 # Routers
 app.include_router(
     load_data_router,
-    prefix="/v1",
+    prefix="/v1/data",
     tags=["load_data"],
 )
 app.include_router(
     search_router,
-    prefix="/v1",
+    prefix="/v1/search",
     tags=["search"],
+)
+app.include_router(
+    semantic_search_router,
+    prefix="/v1/semantic_search",
+    tags=["semantic_search"],
 )

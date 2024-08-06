@@ -14,11 +14,11 @@ class User(Base):
     public = Column(Boolean)
     profile_bio = Column(Text)
     onboarded = Column(Boolean)
-    createdAt = Column(TIMESTAMP)
-    updated_at = Column(TIMESTAMP)
-    cid = Column(Integer)
-    last_seen = Column(TIMESTAMP)
+    createdAt = Column(String)
+    updated_at = Column(String)
+    last_seen = Column(String)
     score = Column(Integer)
+    cid = Column(Integer)
 
 
 class Interest(Base):
@@ -29,4 +29,52 @@ class Interest(Base):
     is_custom = Column(Boolean)
 
 
-# Add other models similarly...
+class Subject(Base):
+    __tablename__ = "subjects"
+    id = Column(Integer, primary_key=True, index=True)
+    subject = Column(String)
+    is_custom = Column(Boolean)
+
+
+class School(Base):
+    __tablename__ = "schools"
+    id = Column(Integer, primary_key=True, index=True)
+    school_name = Column(String)
+    school_img_url = Column(String)
+    is_custom = Column(Boolean)
+
+
+class UserEducation(Base):
+    __tablename__ = "user_education"
+    id = Column(Integer, primary_key=True, index=True)
+    uid = Column(Integer)
+    school_id = Column(Integer)
+    major = Column(Integer)
+    minor = Column(Integer)
+    graduated_year = Column(Integer)
+    expected_grad_year = Column(Integer)
+    updated_at = Column(TIMESTAMP)
+    location = Column(String)
+    description = Column(Text)
+
+
+class UserExperience(Base):
+    __tablename__ = "user_experiences"
+    id = Column(Integer, primary_key=True, index=True)
+    uid = Column(Integer)
+    start_date = Column(TIMESTAMP)
+    end_date = Column(TIMESTAMP)
+    company = Column(String)
+    position = Column(String)
+    position_bio = Column(Text)
+    updated_at = Column(TIMESTAMP)
+    company_logo_key = Column(String)
+    location = Column(String)
+
+
+class UserInterest(Base):
+    __tablename__ = "user_interests"
+    id = Column(Integer, primary_key=True, index=True)
+    uid = Column(Integer)
+    interest_id = Column(Integer)
+    updated_at = Column(TIMESTAMP)

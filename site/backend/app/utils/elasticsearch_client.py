@@ -1,6 +1,8 @@
 from elasticsearch import Elasticsearch
 
-es = Elasticsearch(["http://elasticsearch:9200"])
+from app.core.config import settings
+
+es = Elasticsearch(settings.ELASTICSEARCH_URL)
 
 
 def create_index(index_name):
